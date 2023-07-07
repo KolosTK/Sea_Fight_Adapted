@@ -33,8 +33,34 @@ namespace SeaFight
             enemyMap = enemy.GenerateRandomShips();
 
             Initialization();
+
+            MapsOutput();
                       
 
+        }
+
+        public void MapsOutput()
+        {
+            for (int i = 0; i < buttonHeight; i++)
+            {
+                for (int k = 0; k < buttonWidth; k++)
+                {
+                    if (i!=0 || k!=0)
+                    {
+                        myButtons[i, k].Click += new EventHandler(PlaceShips);
+                    }
+                    this.Controls.Add(myButtons[i, k]);
+                }
+                for (int k = 0; k < buttonWidth; k++)
+                {
+                    if (i != 0 || k != 0)
+                    {
+                        enemyButtons[i, k].Click += new EventHandler(IsAtackSuccesfull);
+
+                    }
+                    this.Controls.Add(enemyButtons[i, k]);
+                }
+            }
         }
 
         public void Initialization ()
@@ -64,11 +90,6 @@ namespace SeaFight
                             myButtons[i, k].Text = latters[k-1].ToString();
                         }
                     }
-                    else
-                    {
-                        myButtons[i, k].Click += new EventHandler(PlaceShips);
-                    }
-                    this.Controls.Add(myButtons[i, k]);
                 }
 
                 //enemy realization
@@ -92,13 +113,6 @@ namespace SeaFight
                         }
 
                     }
-                    else
-                    {
-                        enemyButtons[i, k].Click += new EventHandler(IsAtackSuccesfull);
-                        //enemy.Atack();
-                        
-                    }
-                    this.Controls.Add(enemyButtons[i, k]);
                 }
 
                 Button startButton = new Button();
