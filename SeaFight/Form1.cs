@@ -32,14 +32,12 @@ namespace SeaFight
 
             enemyMap = enemy.GenerateRandomShips();
 
-            Initialization();
-
-            MapsOutput();
+            MapsOutput(Initialization());
                       
 
         }
 
-        public void MapsOutput()
+        public void MapsOutput(Button startButton)
         {
             for (int i = 0; i < buttonHeight; i++)
             {
@@ -60,11 +58,16 @@ namespace SeaFight
                     }
                     this.Controls.Add(enemyButtons[i, k]);
                 }
+
+                startButton.Click += new EventHandler(StartTheGame);
+                this.Controls.Add(startButton);
+
             }
         }
 
-        public void Initialization ()
+        public Button Initialization ()
         {
+            Button startButton = new Button();
             for (int i = 0; i < buttonHeight; i++)
             {
                 //my realization
@@ -114,14 +117,12 @@ namespace SeaFight
 
                     }
                 }
-
-                Button startButton = new Button();
                 startButton.Location = new Point(363, 380);
                 startButton.Text = "Start";
-                startButton.Click += new EventHandler(StartTheGame);
 
-                this.Controls.Add(startButton);
             }
+
+            return startButton;
         }
         public void StartTheGame (object sender, EventArgs e)
         {
