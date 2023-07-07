@@ -34,8 +34,10 @@ namespace SeaFight
 
             MapsOutput(Initialization());
                       
-
+            
         }
+
+        
 
         public void MapsOutput(Button startButton)
         {
@@ -53,7 +55,7 @@ namespace SeaFight
                 {
                     if (i != 0 || k != 0)
                     {
-                        enemyButtons[i, k].Click += new EventHandler(IsAtackSuccesfull);
+                        enemyButtons[i, k].Click += new EventHandler(PlayerShoot);
 
                     }
                     this.Controls.Add(enemyButtons[i, k]);
@@ -133,6 +135,21 @@ namespace SeaFight
             }
         }
 
+        public void PlayerShoot(object sender, EventArgs e)
+        {
+            Button currentButton = sender as Button;
+            bool isHitSuccess = IsAtackSuccesfull(currentButton);
+            if (!isHitSuccess) 
+            {
+                enemy.Atack();
+            }
+            if (CheckEmptiness())
+            {
+                this.Controls.Clear();
+                Initialization();
+            }
+        }
+
         public void PlaceShips (object sender, EventArgs e)
         {
             if (!IsTheGameStarts)
@@ -150,17 +167,42 @@ namespace SeaFight
                 }
             }
         }
-        public void IsAtackSuccesfull(object sender, EventArgs e)
+        public bool IsAtackSuccesfull(Button currentButton)
         {
+            bool isAtackSuccesfull = false; 
             if (IsTheGameStarts) 
             {
-                Button currentButton = sender as Button;
                 if (enemyMap[currentButton.Location.Y / buttonSize, (currentButton.Location.X-distanseMaps) / buttonSize ] == 1)
                 {
                     currentButton.BackColor = Color.Red;
+                    enemyMap[currentButton.Location.Y / buttonSize, (currentButton.Location.X - distanseMaps) / buttonSize] = 0;
+                    isAtackSuccesfull = true;
                 }
                 else { currentButton.BackColor = Color.Blue; }
             }
+            return isAtackSuccesfull;
+        }
+        public bool CheckEmptiness()
+        {
+            bool isMyMapEmpty = true;
+            bool isEnemyMapEmpty = true;
+            for (int i = 0; i < buttonHeight; i++)
+            {
+                for (int k = 0; k < buttonWidth; k++)
+                {
+                    if (myMap[i, k] != 0)
+                    {
+                        isMyMapEmpty = false;
+                        break;
+                    }
+                    if (enemyMap[i, k] != 0)
+                    {
+                        isEnemyMapEmpty = false;
+                        break;
+                    }
+                }
+            }
+            return (isEnemyMapEmpty || isMyMapEmpty) ? true : false;
         }
 
         private void Form1_Load(object sender, EventArgs e)

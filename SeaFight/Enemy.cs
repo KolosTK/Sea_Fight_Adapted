@@ -17,7 +17,9 @@ namespace SeaFight
         public int[,] enemyMap = new int[Form1.buttonHeight, Form1.buttonWidth];
         public int[,] myMap = new int[Form1.buttonHeight, Form1.buttonWidth];
 
-        
+        public const int buttonSize = 35;
+
+
 
         public Enemy(Button[,] myButtons, Button[,] enemyButtons, int[,] enemyMap, int[,] myMap)
         {
@@ -108,9 +110,10 @@ namespace SeaFight
             while (true)
             {
                 Button button = enemyButtons[rand.Next(1, Form1.buttonHeight), rand.Next(1, Form1.buttonWidth)];
-                if (IsCellEmpty(enemyMap[button.Location.Y, button.Location.X]) == true)
+                if (!IsCellEmpty(enemyMap[button.Location.Y/ buttonSize, button.Location.X/ buttonSize]))
                 {
                     button.BackColor = Color.Red;
+                    enemyMap[button.Location.Y / buttonSize, button.Location.X / buttonSize] = 0;
                     continue;
                 }
                 else
