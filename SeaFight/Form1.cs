@@ -56,7 +56,6 @@ namespace SeaFight
                     if (i != 0 || k != 0)
                     {
                         enemyButtons[i, k].Click += new EventHandler(PlayerShoot);
-
                     }
                     this.Controls.Add(enemyButtons[i, k]);
                 }
@@ -138,17 +137,23 @@ namespace SeaFight
         public void PlayerShoot(object sender, EventArgs e)
         {
             Button currentButton = sender as Button;
-            bool isHitSuccess = IsAtackSuccesfull(currentButton);
-            if (!isHitSuccess) 
+            if (currentButton.BackColor != Color.Red || currentButton.BackColor != Color.Blue)
             {
-                enemy.Atack();
+                bool isHitSuccess = IsAtackSuccesfull(currentButton);
+                if (!isHitSuccess)
+                {
+                    enemy.Atack();
+                }
+                if (CheckEmptiness())
+                {
+                    this.Controls.Clear();
+                    Initialization();
+                }
             }
-            if (CheckEmptiness())
-            {
-                this.Controls.Clear();
-                Initialization();
-            }
+            
         }
+
+       
 
         public void PlaceShips (object sender, EventArgs e)
         {
@@ -167,6 +172,9 @@ namespace SeaFight
                 }
             }
         }
+
+        
+
         public bool IsAtackSuccesfull(Button currentButton)
         {
             bool isAtackSuccesfull = false; 
